@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build && vite build --config vite.content.config.ts && vite build --config vite.whatsapp.config.ts && node scripts/copy-ocr-assets.mjs",
+    "build": "vite build && node scripts/copy-ocr-assets.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

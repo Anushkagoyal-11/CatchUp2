@@ -1,6 +1,6 @@
 # CatchUp Universal
 
-CatchUp is a Chrome Manifest V3 extension for catching up on rendered Slack and WhatsApp Web messages, imported text, and screenshots. Summaries use local extractive text matching; screenshot OCR and ZIP extraction also run in the extension. No API key, cloud account, or message upload is used.
+CatchUp is a Chrome Manifest V3 extension for summarizing user-selected chat text and screenshots. Summaries use local extractive text matching; screenshot OCR and ZIP extraction also run in the extension. It requests no access to WhatsApp or other websites, needs no API key, and makes no message uploads.
 
 ## Build and load
 
@@ -12,7 +12,7 @@ npm run typecheck
 npm run build
 ```
 
-In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the generated `dist/` folder. Open a Slack or WhatsApp Web conversation, then open CatchUp from the extension toolbar. It captures text exposed in the rendered page. Select records and choose **Create local summary**.
+In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the generated `dist/` folder. Open CatchUp from the extension toolbar, add a ZIP or screenshot of the chat text, then choose **Create local summary**.
 
 ## Import a ZIP or screenshot
 
@@ -22,11 +22,10 @@ In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpa
 
 ## Current scope and limitations
 
-- Slack pages at `app.slack.com` and WhatsApp Web at `web.whatsapp.com`; only rendered message text in the current DOM is inspected.
-- Live-site compatibility and screenshot OCR have not yet been manually verified against real accounts/images.
-- WhatsApp timestamps are left blank unless a reliable source format is added. Unread status remains unknown.
-- Other platform adapters, attachments, hidden/virtualized messages, replies, and message sending are not supported.
+- WhatsApp Web and other tabs are not read. To summarize WhatsApp messages, provide a screenshot or an archive containing text you exported.
+- Screenshot OCR has not yet been manually checked against sample images.
+- No automatic chat capture, attachments, hidden/virtualized messages, replies, or message sending.
 - Captured and imported records are bounded to 500 entries and 4,000 characters per record.
-- No API keys or cloud AI integration are included. No host access is requested for an AI provider.
+- No API keys or cloud AI integration are included. The manifest contains no website host permissions or content scripts.
 
 See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md) for details.

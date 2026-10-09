@@ -2,14 +2,9 @@
   "manifest_version": 3,
   "name": "CatchUp Universal",
   "version": "0.1.0",
-  "description": "Catch up on accessible Slack and WhatsApp Web messages, or summarize imported text and screenshots.",
+  "description": "Summarize chat text from user-selected ZIP files and screenshots locally.",
   "permissions": ["storage", "sidePanel"],
-  "host_permissions": ["https://app.slack.com/*", "https://web.whatsapp.com/*"],
   "background": { "service_worker": "background.js", "type": "module" },
-  "content_scripts": [
-    { "matches": ["https://app.slack.com/*"], "js": ["content/slack.js"], "run_at": "document_idle" },
-    { "matches": ["https://web.whatsapp.com/*"], "js": ["content/whatsapp.js"], "run_at": "document_idle" }
-  ],
   "side_panel": { "default_path": "sidepanel.html" },
   "options_page": "options.html",
   "action": { "default_title": "Open CatchUp" },
