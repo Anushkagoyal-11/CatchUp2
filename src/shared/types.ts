@@ -1,0 +1,24 @@
+export type UnreadStatus = "unread_confirmed_by_dom" | "unread_suspected" | "read_indicator_detected" | "unknown";
+export type CapturedMessage = {
+  schemaVersion: 1;
+  id: string;
+  platform: "slack";
+  conversationId: string | null;
+  conversationName: string | null;
+  senderId: string | null;
+  senderName: string | null;
+  timestamp: string | null;
+  capturedAt: string;
+  content: string;
+  contentType: "text";
+  direction: "incoming" | "outgoing" | "unknown";
+  accessibilityStatus: "captured_from_accessible_dom";
+  unreadStatus: UnreadStatus;
+  unreadEvidence: string[];
+  unreadConfidence: number | null;
+  extractionMethod: "dom";
+  sourceUrl: string;
+  contentHash: string;
+};
+export type CapturePayload = Omit<CapturedMessage, "schemaVersion" | "capturedAt" | "accessibilityStatus" | "unreadStatus" | "unreadEvidence" | "unreadConfidence" | "extractionMethod" | "contentHash">;
+export type Settings = { apiKey?: string; model?: string; retentionDays?: number; maxRecords?: number };

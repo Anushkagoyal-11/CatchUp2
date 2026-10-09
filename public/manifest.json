@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "CatchUp Universal",
+  "version": "0.1.0",
+  "description": "A local-first catch-up dashboard for communication apps.",
+  "permissions": ["storage", "sidePanel"],
+  "host_permissions": ["https://app.slack.com/*", "https://api.openai.com/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [{
+    "matches": ["https://app.slack.com/*"],
+    "js": ["content/slack.js"],
+    "run_at": "document_idle"
+  }],
+  "side_panel": { "default_path": "sidepanel.html" },
+  "options_page": "options.html",
+  "action": { "default_title": "Open CatchUp" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'self'" }
+}
