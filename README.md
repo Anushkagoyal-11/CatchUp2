@@ -1,29 +1,32 @@
 # CatchUp Universal
 
-CatchUp is a Chrome Manifest V3 extension for reviewing accessible communication content in one place. This initial vertical slice supports rendered Slack messages only. It keeps captured text in local Chrome storage, labels unread status as unknown, and never uploads content unless you select messages and confirm the cloud-processing disclosure.
+CatchUp is a Chrome Manifest V3 extension for catching up on rendered Slack and WhatsApp Web messages, imported text, and screenshots. Summaries use local extractive text matching; screenshot OCR and ZIP extraction also run in the extension. No API key, cloud account, or message upload is used.
 
 ## Build and load
 
 Requires Node.js 20 or newer.
 
 ```sh
-npm install
+npm ci
 npm run typecheck
 npm run build
 ```
 
-In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the generated `dist/` folder. Click the extension icon to open the side panel. Configure an OpenAI API key in Settings only if you want cloud summaries.
+In Chrome, open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select the generated `dist/` folder. Open a Slack or WhatsApp Web conversation, then open CatchUp from the extension toolbar. It captures text exposed in the rendered page. Select records and choose **Create local summary**.
 
-## Current scope
+## Import a ZIP or screenshot
 
-- Slack pages at `app.slack.com`; only rendered message content found in the current DOM is captured.
-- Gmail, WhatsApp, Telegram, Discord, Teams, and live-site compatibility have not been implemented or verified.
-- No guaranteed unread access. Unread stays unknown.
-- No attachments, hidden/virtualized messages, reply/send actions, or remote application backend.
-- Captured records are bounded to 500 entries and 4,000 characters per message.
-- API keys are stored in Chrome extension storage, which is not a dedicated encrypted secret store.
-- Summaries use the OpenAI Chat Completions API after an explicit per-request confirmation. Selected content is transmitted to OpenAI and the resulting summary is stored locally.
+- ZIPs can contain `.txt`, `.md`, `.csv`, or `.json` files. Text is extracted in the side panel and stored locally as selectable excerpts. Archive size is capped at 10 MB, supported entries at 40, and extracted text at 60,000 characters.
+- Screenshots can be PNG, JPG, or WebP. English OCR runs locally using the bundled Tesseract engine and language data. Images and OCR text are kept in the side panel memory only; they are not uploaded or persisted.
+- Local summaries identify likely key sentences, action wording, and decision wording. They are extractive heuristics, not an AI model, and can miss context.
 
-## Privacy
+## Current scope and limitations
 
-See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md) for access and data-handling details.
+- Slack pages at `app.slack.com` and WhatsApp Web at `web.whatsapp.com`; only rendered message text in the current DOM is inspected.
+- Live-site compatibility and screenshot OCR have not yet been manually verified against real accounts/images.
+- WhatsApp timestamps are left blank unless a reliable source format is added. Unread status remains unknown.
+- Other platform adapters, attachments, hidden/virtualized messages, replies, and message sending are not supported.
+- Captured and imported records are bounded to 500 entries and 4,000 characters per record.
+- No API keys or cloud AI integration are included. No host access is requested for an AI provider.
+
+See [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md) for details.

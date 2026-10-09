@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
 
 function Settings() {
-  const [apiKey, setApiKey] = useState("");
-  const [model, setModel] = useState("gpt-4o-mini");
-  const [saved, setSaved] = useState(false);
-  useEffect(() => { chrome.runtime.sendMessage({ type: "GET_SETTINGS" }).then((result: { settings?: { apiKey?: string; model?: string } }) => { setApiKey(result.settings?.apiKey ?? ""); setModel(result.settings?.model ?? "gpt-4o-mini"); }); }, []);
-  const save = async () => { await chrome.runtime.sendMessage({ type: "SAVE_SETTINGS", settings: { apiKey, model } }); setSaved(true); window.setTimeout(() => setSaved(false), 2500); };
-  const removeKey = async () => { setApiKey(""); await chrome.runtime.sendMessage({ type: "SAVE_SETTINGS", settings: { apiKey: "", model } }); setSaved(true); window.setTimeout(() => setSaved(false), 2500); };
-  return <main><header><span className="mark">C</span><div><h1>CatchUp settings</h1><p>Control your optional AI provider.</p></div></header><section><label htmlFor="key">OpenAI API key</label><input id="key" type="password" autoComplete="off" value={apiKey} placeholder="sk-…" onChange={(e) => setApiKey(e.target.value)}/><p>Your key is stored in Chrome extension storage on this device. This is not a dedicated encrypted secrets manager. Use a revocable key with limited access.</p><label htmlFor="model">Model</label><input id="model" value={model} onChange={(e) => setModel(e.target.value)} placeholder="gpt-4o-mini"/><div className="actions"><button onClick={() => void save()}>Save settings</button><button className="remove" onClick={() => void removeKey()}>Remove key</button>{saved && <span role="status">Saved</span>}</div></section><section><h2>What CatchUp can access</h2><p>The current build captures rendered Slack message text on <code>app.slack.com</code>. It does not access other apps, hidden messages, attachments, or full page HTML. Unread status is shown as unknown.</p><p>No content leaves your browser until you select messages in the side panel and confirm the disclosure. Summaries are stored locally.</p></section></main>;
+  return <main>
+    <header><span className="mark">C</span><div><h1>CatchUp settings</h1><p>Local processing and platform access.</p></div></header>
+    <section><h2>On-device summaries</h2><p>CatchUp extracts ZIP text, reads screenshots with bundled English OCR, and builds extractive summaries locally. It does not need an API key, does not send messages to a cloud model, and does not request access to unrelated websites.</p></section>
+    <section><h2>Current capture sources</h2><p>Slack and WhatsApp Web pages are scanned for rendered message text only. The extension cannot guarantee access to every conversation or message. DOM selectors may stop working when a website changes its layout.</p><p>Supported ZIP text files: TXT, Markdown, CSV, and JSON. Supported screenshots: PNG, JPG, and WebP. Screenshot text is OCR-processed on this device and is not stored as an image.</p></section>
+    <section><h2>Data controls</h2><p>Captured messages, imported text, and summaries stay in Chrome extension storage. Use <strong>Delete all</strong> in the side panel to remove stored messages and summaries. Screenshot images and OCR text remain only in the open side panel until it is closed or cleared.</p></section>
+  </main>;
 }
 createRoot(document.getElementById("root")!).render(<Settings/>);

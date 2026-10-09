@@ -1,10 +1,10 @@
 # Security notes
 
-- Manifest V3 with only `storage` and `sidePanel` extension permissions.
-- Host access is limited to Slack's web app and the OpenAI API endpoint used for explicit summaries.
-- Runtime capture messages are checked against the Slack sender origin and bounded record shape, count, and text length.
-- Captured text is rendered as text, not HTML.
-- Message content is untrusted. The summarization prompt explicitly tells the model not to follow content instructions; returned JSON shape and source IDs are checked before display.
-- No remote scripts, dynamic code execution, cookies, or automatic AI uploads.
+- Manifest V3 requests only `storage` and `sidePanel` permissions. Host access is limited to Slack and WhatsApp Web.
+- ZIP imports are user-initiated, size-bounded, and limited to plain text, Markdown, CSV, and JSON entries. Extracted text is rendered as text.
+- Screenshot OCR runs with packaged extension code, WASM, and English trained data. No remote worker script or OCR service is used.
+- Runtime capture messages are checked against the source origin and bounded record shape, count, and text length.
+- Captured content is untrusted input. The local summarizer only selects original sentences and does not execute instructions or perform actions.
+- No API keys, cloud AI requests, remote scripts, dynamic code execution, cookies, or automatic uploads.
 
-Known limitation: extension storage is not an encrypted secret vault. The Slack DOM selectors are heuristic and may stop matching after site changes. Real-site compatibility has not yet been verified.
+Known limitation: website DOM selectors and local extractive summaries are heuristic. Live-site compatibility and OCR quality have not been manually validated against real content.

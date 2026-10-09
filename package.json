@@ -4,20 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build && vite build --config vite.content.config.ts",
+    "build": "vite build && vite build --config vite.content.config.ts && vite build --config vite.whatsapp.config.ts && node scripts/copy-ocr-assets.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
+    "jszip": "^3.10.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.326",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.7",
-    "typescript": "^5.8.3",
     "@vitejs/plugin-react": "^4.4.1",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   }
 }

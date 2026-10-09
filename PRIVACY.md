@@ -1,9 +1,7 @@
 # Privacy
 
-CatchUp currently has a single Slack DOM adapter. It reads message text, visible sender/conversation labels, and an exposed timestamp from accessible rendered nodes on `https://app.slack.com/`. It does not read cookies, credentials, raw HTML, or unrelated sites. The app cannot guarantee that it sees every message or unread item.
+CatchUp scans rendered message text on the supported Slack and WhatsApp Web origins only. It does not read cookies, credentials, raw HTML, or unrelated pages. Page adapters can only see content currently exposed by the site DOM; they cannot guarantee a complete inbox or unread-message view.
 
-Captured records, settings, and summaries are stored in `chrome.storage.local` on this browser. The side panel offers per-message deletion and clear-all. A saved API key can be removed separately in Settings.
+Captured chat messages and text extracted from ZIP archives stay in `chrome.storage.local`. The side panel provides per-record deletion and clear-all. Screenshot files and their locally recognized OCR text are held in side panel memory only and are not persisted. ZIP text is imported only after the user selects the archive.
 
-Cloud summarization is optional. A user must select records and confirm a disclosure before a request. The selected message text and associated labels, timestamps, and IDs are sent to OpenAI over HTTPS using the configured key. No request is sent during capture. CatchUp does not log message content or API keys. The extension stores returned summaries locally.
-
-The API key is stored in Chrome extension storage, not in a dedicated encrypted secrets manager. Use a revocable key and remove it from Settings when no longer needed.
+Summaries use local extractive heuristics. Screenshot OCR uses the bundled English Tesseract model. The extension does not send records or images to any server and does not use API keys. No external AI provider permission is requested.
